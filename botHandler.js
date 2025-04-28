@@ -1,7 +1,11 @@
 const { Markup } = require("telegraf");
 const rateLimit = require("./middlewares/rateLimit");
 const logger = require("./middlewares/logger");
+const cache = require("./services/cacheService");
 const { searchDomainOrIP } = require("./services/searchService");
+const { resolveRealIP, isCloudflareIP } = require("./utils/cloudflare");
+const axios = require("axios");
+const { checkOpenPorts } = require("./services/portService");
 
 const userSearchState = {};
 
@@ -34,9 +38,19 @@ const botHandler = (bot) => {
       const query = ctx.message.text.trim();
       delete userSearchState[ctx.chat.id];
 
-      const result = await searchDomainOrIP(query);
+      const cached = cache.get(query);
+      if (cached) {
+        await ctx.replyWithHTML(cached);
+        return;
+      }
 
-      await ctx.replyWithHTML(result);
+      try {
+        const message = await searchDomainOrIP(query);
+        cache.set(query, message);
+        await ctx.reply(message, { parse_mode: "HTML" });
+      } catch (err) {
+        await ctx.reply(`❌ Error: ${err.message}`);
+      }
     }
   });
 };

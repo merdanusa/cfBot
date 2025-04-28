@@ -1,6 +1,6 @@
 const dns = require("dns").promises;
 const axios = require("axios");
-const { resolveRealIP } = require("../utils/cloudflare");
+const { resolveRealIP, isCloudflareIP } = require("../utils/cloudflare");
 const { checkOpenPorts } = require("./portService");
 const cache = require("./cacheService");
 
@@ -21,13 +21,16 @@ const searchDomainOrIP = async (query) => {
         ? `🚪 Open Ports: <b>${openPorts.join(", ")}</b>`
         : "🚪 No open ports found.";
 
+    const isCF = isCloudflareIP(realIp);
+    const proxyStatus = isCF ? "Yes" : "No";
+
     const info = `
 🌐 Query: <b>${query}</b>
 📍 Resolved IP: <b>${realIp}</b>
 🌍 Country: <b>${data.country}</b>
 🏙️ City: <b>${data.city}</b>
-🔐 Proxy: <b>${data.proxy ? "Yes" : "No"}</b>
-🛡️ Cloudflare: <b>${data.org.includes("Cloudflare") ? "Yes" : "No"}</b>
+🔐 Proxy: <b>${proxyStatus}</b>
+🛡️ Cloudflare: <b>${isCF ? "Yes" : "No"}</b>
 ${portsInfo}
     `;
 
