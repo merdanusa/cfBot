@@ -1,25 +1,25 @@
-# Cloudflare IP Info Bot
+# @cloudflareIPInfoBot
 
-A simple Telegram bot to check information about IP addresses and domains.
+> Cloudflare IP Analyzer Bot built with Node.js + Telegraf.
 
-## Features
-- Detects real IP of domains
-- Identifies Cloudflare IPs
-- Checks open ports (80/443)
-- Geolocation data
-- Lightweight and fast
+## Core Modules
 
-## Usage
-Search any domain or IP in the bot to get:
-- Resolved IP
-- Country and City
-- Cloudflare status
-- Proxy info
-- Open Ports
+- `cloudflare.js`: Resolve IPs, detect CF IPs
+- `searchService.js`: Main search handler
+- `portService.js`: Scan for common open ports
+- `cacheService.js`: Simple in-memory cache
+- `botHandler.js`: Telegraf flow
 
-## Tech Stack
-- Node.js
-- Telegraf.js
+## Commands
 
-## Author
-[@merdan_usa](https://t.me/merdan_usa)
+- `/start` — Open main menu
+- `🔍 Search` — Prompt for IP/domain
+- Replies with info like country, proxy status, open ports, etc.
+
+## Installation
+
+```bash
+git clone https://github.com/youruser/cloudflare-ip-bot
+cd cloudflare-ip-bot
+npm install
+node index.js
