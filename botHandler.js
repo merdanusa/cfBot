@@ -1,4 +1,3 @@
-// Updated botHandler.js
 const { Markup } = require("telegraf");
 const rateLimit = require("./middlewares/rateLimit");
 const logger = require("./middlewares/logger");
