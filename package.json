@@ -15,6 +15,7 @@
   "dependencies": {
     "axios": "^1.9.0",
     "body-parser": "^2.2.0",
+    "cheerio": "^1.1.2",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "ip-range-check": "^0.2.0",
