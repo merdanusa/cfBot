@@ -21,13 +21,29 @@ bot.on("successful_payment", async (ctx) => {
   const user = await User.findOne({ id: parseInt(userId) });
   if (user) {
     const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + (period === "week" ? 7 : 30));
+    expiryDate.setDate(expiryDate.getDate() + 30); // 1 month
 
     user.isVip = true;
     user.vipExpires = expiryDate;
     await user.save();
 
-    await ctx.reply("🎉 Thank you for your purchase! You now have VIP status!");
+    await ctx.reply(
+      `
+🎉 <b>WELCOME TO VIP!</b> 💎
+
+✨ <b>Your VIP benefits:</b>
+• Unlimited daily searches
+• 3x more spy requests
+• Priority processing
+• Advanced analytics tools
+• Exclusive features
+
+⚡ <i>Thank you for upgrading! Start using your new powers now!</i>
+
+🔍 <b>Pro tip:</b> Use /spy command for deep domain analysis!
+        `.trim(),
+      { parse_mode: "HTML" }
+    );
   }
 });
 

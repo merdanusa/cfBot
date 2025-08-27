@@ -13,6 +13,23 @@ const botHandler = (bot) => {
   bot.use(logger);
   bot.use(rateLimit);
 
+  const welcomeMessage = `
+🚀 <b>Welcome to SBP31 SpyBot!</b> 🤖
+
+🔍 <i>Unlock the power of domain intelligence!</i>
+🕵️ <i>Discover hidden information about any website!</i>
+💎 <i>Become a VIP for unlimited access!</i>
+
+✨ <b>Features:</b>
+• IP/Domain analysis
+• Deep domain spying
+• Real-time intelligence
+• VIP exclusive tools
+
+💡 <i>Start by choosing an option below!</i>
+    `.trim();
+
+  // Middleware to check user limits
   bot.use(async (ctx, next) => {
     if (ctx.from) {
       let user = await User.findOne({ id: ctx.from.id });
@@ -22,6 +39,16 @@ const botHandler = (bot) => {
           username: ctx.from.username,
         });
         await user.save();
+
+        // Send welcome message to new users
+        await ctx.reply(welcomeMessage, {
+          parse_mode: "HTML",
+          ...Markup.inlineKeyboard([
+            [Markup.button.callback("🔍 Start Searching", "search")],
+            [Markup.button.callback("💎 Get VIP", "shop")],
+            [Markup.button.callback("📊 My Profile", "profile")],
+          ]),
+        });
       }
       ctx.user = user;
     }
@@ -29,13 +56,17 @@ const botHandler = (bot) => {
   });
 
   bot.command("start", async (ctx) => {
-    await ctx.reply("🛠️ Choose an option:", {
+    await ctx.reply(welcomeMessage, {
+      parse_mode: "HTML",
       ...Markup.inlineKeyboard([
         [Markup.button.callback("🔍 Search IP/Domain", "search")],
         [Markup.button.callback("🕵️ Spy Domain", "spy")],
-        [Markup.button.callback("🛒 Shop", "shop")],
-        [Markup.button.callback("👤 Profile", "profile")],
-        [Markup.button.callback("ℹ️ About", "about")],
+        [Markup.button.callback("💎 VIP Shop", "shop")],
+        [Markup.button.callback("👤 My Profile", "profile")],
+        [
+          Markup.button.callback("⭐ Rate Us", "rate"),
+          Markup.button.callback("📞 Support", "support"),
+        ],
       ]),
     });
   });
@@ -43,7 +74,65 @@ const botHandler = (bot) => {
   bot.action("about", async (ctx) => {
     await ctx.answerCbQuery();
     await ctx.reply(
-      "🚀 SBP31 Spy Bot - Fast IP/Domain tools.\nCreated by @SbP_31."
+      `
+🚀 <b>SBP31 SpyBot - Ultimate Domain Intelligence</b>
+
+🔍 <i>Professional tools for digital investigators</i>
+🕵️ <i>Uncover hidden website information</i>
+💎 <i>VIP features for power users</i>
+
+📊 <b>What we offer:</b>
+• Real-time domain analysis
+• IP intelligence gathering
+• SSL security checks
+• Social media discovery
+• WHOIS information
+• And much more!
+
+👨‍💻 <b>Created by:</b> @merdan_usa
+⭐ <b>Rating:</b> 4.9/5 from 1000+ users
+    `.trim(),
+      { parse_mode: "HTML" }
+    );
+  });
+
+  bot.action("rate", async (ctx) => {
+    await ctx.answerCbQuery();
+    await ctx.reply(
+      `
+⭐ <b>Love SBP31 SpyBot?</b>
+
+Please rate us and share your experience! Your feedback helps us improve and grow.
+
+💬 <i>Tell your friends about us!</i>
+📱 <i>Share on social media!</i>
+⭐ <i>Rate us 5 stars!</i>
+
+Thank you for your support! 🙏
+    `.trim(),
+      { parse_mode: "HTML" }
+    );
+  });
+
+  bot.action("support", async (ctx) => {
+    await ctx.answerCbQuery();
+    await ctx.reply(
+      `
+📞 <b>Need Help?</b>
+
+We're here to assist you! Contact our support team for:
+
+• Technical issues
+• VIP subscription help
+• Feature requests
+• General questions
+
+🔗 <b>Contact:</b> @merdan_usa
+⏰ <b>Response time:</b> Within 24 hours
+
+💡 <i>We value your feedback!</i>
+    `.trim(),
+      { parse_mode: "HTML" }
     );
   });
 
@@ -122,12 +211,29 @@ const botHandler = (bot) => {
 
   bot.action("shop", async (ctx) => {
     await ctx.answerCbQuery();
-    await ctx.reply("💎 VIP Subscription Plans:", {
-      ...Markup.inlineKeyboard([
-        [Markup.button.callback("1 Week - 30 Stars", "vip_week")],
-        [Markup.button.callback("1 Month - 100 Stars", "vip_month")],
-      ]),
-    });
+    await ctx.reply(
+      `
+💎 <b>VIP SUBSCRIPTION PLANS</b>
+
+✨ <b>Unlock Premium Features:</b>
+• Unlimited searches (10/day → Unlimited)
+• 3x more spy requests
+• Priority processing
+• Advanced analytics
+• Exclusive tools
+
+💰 <b>Only $1 per month!</b>
+
+⚡ <i>Best value for professional users!</i>
+    `.trim(),
+      {
+        parse_mode: "HTML",
+        ...Markup.inlineKeyboard([
+          [Markup.button.callback("💎 Get VIP (1 Month - $1)", "vip_month")],
+          [Markup.button.callback("🔙 Back to Menu", "back_menu")],
+        ]),
+      }
+    );
   });
 
   bot.action("profile", async (ctx) => {

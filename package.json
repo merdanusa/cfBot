@@ -24,6 +24,7 @@
     "node-cache": "^5.1.2",
     "nodemon": "^3.1.10",
     "telegraf": "^4.16.3",
-    "telegraf-ratelimit": "^2.0.0"
+    "telegraf-ratelimit": "^2.0.0",
+    "whois-json": "^2.0.4"
   }
 }
