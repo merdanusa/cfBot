@@ -89,8 +89,8 @@ const botHandler = (bot) => {
 • WHOIS information
 • And much more!
 
-👨‍💻 <b>Created by:</b> @merdan_usa
-⭐ <b>Rating:</b> 4.9/5 from 1000+ users
+👨‍💻 <b>Created by:</b> @SbP_31
+⭐ <b>Rating:</b> 4.3/5 from 4000+ users
     `.trim(),
       { parse_mode: "HTML" }
     );
@@ -106,9 +106,9 @@ Please rate us and share your experience! Your feedback helps us improve and gro
 
 💬 <i>Tell your friends about us!</i>
 📱 <i>Share on social media!</i>
-⭐ <i>Rate us 5 stars!</i>
+⭐ <i>Rate us a star!</i>
 
-Thank you for your support! 🙏
+Thank you for your support!
     `.trim(),
       { parse_mode: "HTML" }
     );
