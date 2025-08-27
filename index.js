@@ -7,7 +7,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 botHandler(bot);
 
 bot.launch();
-console.log("🤖 Bot is running...");
+console.log("👨‍💻 sbp31SpyBot is running... 🤖");
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
