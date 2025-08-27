@@ -13,7 +13,6 @@ const botHandler = (bot) => {
   bot.use(logger);
   bot.use(rateLimit);
 
-  // Middleware to check user limits
   bot.use(async (ctx, next) => {
     if (ctx.from) {
       let user = await User.findOne({ id: ctx.from.id });
@@ -36,19 +35,21 @@ const botHandler = (bot) => {
         [Markup.button.callback("🕵️ Spy Domain", "spy")],
         [Markup.button.callback("🛒 Shop", "shop")],
         [Markup.button.callback("👤 Profile", "profile")],
+        [Markup.button.callback("ℹ️ About", "about")],
       ]),
     });
   });
 
   bot.action("about", async (ctx) => {
     await ctx.answerCbQuery();
-    await ctx.reply("🚀 Fast IP/Domain tools.\nCreated by @merdan_usa.");
+    await ctx.reply(
+      "🚀 SBP31 Spy Bot - Fast IP/Domain tools.\nCreated by @SbP_31."
+    );
   });
 
   bot.action("search", async (ctx) => {
     await ctx.answerCbQuery();
 
-    // Check limits
     if (ctx.user.id !== 6558036376) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -80,7 +81,6 @@ const botHandler = (bot) => {
   bot.action("spy", async (ctx) => {
     await ctx.answerCbQuery();
 
-    // Check limits
     if (ctx.user.id !== 6558036376) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -182,7 +182,6 @@ const botHandler = (bot) => {
         let message;
         if (action === "search") {
           message = await searchDomainOrIP(query);
-          // Add to history
           ctx.user.history.push({
             query,
             type: "search",
@@ -190,7 +189,6 @@ const botHandler = (bot) => {
           await ctx.user.save();
         } else if (action === "spy") {
           message = await spyDomain(query);
-          // Add to history
           ctx.user.history.push({
             query,
             type: "spy",
