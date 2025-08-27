@@ -3,8 +3,8 @@ const User = require("../models/User");
 
 const handlePayment = async (ctx, period) => {
   const prices = {
-    week: 3000, // 30 stars * 100
-    month: 10000, // 100 stars * 100
+    week: 3000,
+    month: 10000,
   };
 
   const periods = {
