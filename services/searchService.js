@@ -3,6 +3,7 @@ const axios = require("axios");
 const { resolveRealIP, isCloudflareIP } = require("../utils/cloudflare");
 const { checkOpenPorts } = require("./portService");
 const cache = require("./cacheService");
+const { isFastlyIP } = require("../utils/fastly");
 
 const searchDomainOrIP = async (query) => {
   try {
@@ -18,21 +19,23 @@ const searchDomainOrIP = async (query) => {
     const openPorts = await checkOpenPorts(realIp);
     const portsInfo =
       openPorts.length > 0
-        ? `🚪 Open Ports: <b>${openPorts.join(", ")}</b>`
-        : "🚪 No open ports found.";
+        ? `🚪 <b>Open Ports:</b> ${openPorts.join(", ")}`
+        : "🚪 <b>No open ports found.</b>";
 
     const isCF = isCloudflareIP(realIp);
-    const proxyStatus = isCF ? "Yes" : "No";
+    const isFastly = isFastlyIP(realIp);
+    const proxyStatus = isCF || isFastly ? "Yes" : "No";
+    const service = isCF ? "Cloudflare" : isFastly ? "Fastly" : "None";
 
     const info = `
-🌐 Query: <b>${query}</b>
-📍 Resolved IP: <b>${realIp}</b>
-🌍 Country: <b>${data.country}</b>
-🏙️ City: <b>${data.city}</b>
-🔐 Proxy: <b>${proxyStatus}</b>
-🛡️ Cloudflare: <b>${isCF ? "Yes" : "No"}</b>
+🌐 <b>Query:</b> ${query}
+📍 <b>Resolved IP:</b> ${realIp}
+🌍 <b>Country:</b> ${data.country}
+🏙️ <b>City:</b> ${data.city}
+🔐 <b>Proxy:</b> ${proxyStatus}
+🛡️ <b>Service:</b> ${service}
 ${portsInfo}
-    `;
+        `.trim();
 
     cache.set(query, info);
     return info;
