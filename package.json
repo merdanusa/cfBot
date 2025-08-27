@@ -18,6 +18,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "ip-range-check": "^0.2.0",
+    "mongoose": "^8.18.0",
     "net": "^1.0.2",
     "node-cache": "^5.1.2",
     "nodemon": "^3.1.10",
